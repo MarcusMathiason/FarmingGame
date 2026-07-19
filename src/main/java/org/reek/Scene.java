@@ -6,13 +6,23 @@ import java.util.Map;
 public class Scene {
 
     private Map<String, Mesh> meshMap;
+    private Projection projection;
 
-    public Scene() {
+    public Scene(int width, int height) {
         meshMap = new HashMap<>();
+        projection = new Projection(width, height);
     }
 
     public void addMesh(String meshId, Mesh mesh) {
         meshMap.put(meshId, mesh);
+    }
+
+    public Projection getProjection() {
+        return projection;
+    }
+
+    public void resize(int width, int height) {
+        projection.updateProjectionMatrix(width, height);
     }
 
     public void cleanup() {

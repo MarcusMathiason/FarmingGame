@@ -14,12 +14,19 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 public class SceneRender {
 
     private ShaderProgram shaderProgram;
+    private UniformsMap uniformsMap;
 
     public SceneRender() {
         List<ShaderProgram.ShaderModuleData> shaderModuleDataList = new ArrayList<>();
         shaderModuleDataList.add(new ShaderProgram.ShaderModuleData("/shaders/shader.vert", GL_VERTEX_SHADER));
         shaderModuleDataList.add(new ShaderProgram.ShaderModuleData("/shaders/shader.frag", GL_FRAGMENT_SHADER));
         shaderProgram = new ShaderProgram(shaderModuleDataList);
+        createUniforms();
+    }
+
+    private void createUniforms() {
+        uniformsMap = new UniformsMap(shaderProgram.getProgramId());
+        uniformsMap.createUniform("projectionMatrix");
     }
 
     public void cleanup() {
@@ -33,6 +40,8 @@ public class SceneRender {
             glBindVertexArray(m.getVaoId());
             glDrawElements(GL_TRIANGLES, m.getNumVertices(), GL_UNSIGNED_INT, 0);
         });
+
+        uniformsMap.setUniform("projectionMatrix", scene.getProjection().getProjectionMatrix());
 
         glBindVertexArray(0);
 
