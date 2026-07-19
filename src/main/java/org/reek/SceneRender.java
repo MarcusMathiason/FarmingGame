@@ -5,6 +5,8 @@ import java.util.List;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL11C.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11C.glDrawElements;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
@@ -29,7 +31,7 @@ public class SceneRender {
 
         scene.getMeshMap().values().forEach(m -> {
             glBindVertexArray(m.getVaoId());
-            glDrawArrays(GL_TRIANGLES, 0, m.getNumVertices());
+            glDrawElements(GL_TRIANGLES, m.getNumVertices(), GL_UNSIGNED_INT, 0);
         });
 
         glBindVertexArray(0);
